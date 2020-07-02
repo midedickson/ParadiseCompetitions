@@ -39,6 +39,7 @@ class ItemSerializer(serializers.ModelSerializer):
             'image'
         )
 
+
     def get_category(self, obj):
         return obj.get_category_display()
 

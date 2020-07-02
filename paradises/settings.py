@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'paradise',
     'rest_framework',
-    'django_countries'
 ]
 
 MIDDLEWARE = [
