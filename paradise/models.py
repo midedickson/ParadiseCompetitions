@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django_countries.fields import CountryField
 
 
 class Customer(models.Model):
@@ -104,7 +103,6 @@ class ShippingAddress(models.Model):
     address = models.CharField(max_length=200, null=False)
     city = models.CharField(max_length=200, null=False)
     state = models.CharField(max_length=200, null=False)
-    country = CountryField(multiple=False)
     zipcode = models.CharField(max_length=200, null=False)
     date_added = models.DateTimeField(auto_now_add=True)
 
@@ -155,7 +153,7 @@ class Competition(models.Model):
         return self.title
 
     @ property
-    def net_price(self):
+    def get_net_price(self):
         price = self.price
         if self.allow_discount:
             price = self.discount_price
