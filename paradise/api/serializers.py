@@ -90,9 +90,14 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
 
 
 class Competition_GroupSerializer(serializers.ModelSerializer):
+    competitions = serializers.SerializerMethodField()
+
     class Meta:
         model = Competition_Group
         fields = '__all__'
+
+    def get_competitions(slef, obj):
+        return CompetitionSerializer(obj.competitions.all(), many=True).data
 
 
 class PrizeSerializer(serializers.ModelSerializer):
@@ -107,7 +112,7 @@ class PrizeSerializer(serializers.ModelSerializer):
 class CompetitionSerializer(serializers.ModelSerializer):
     net_price = serializers.SerializerMethodField()
     associated_product = serializers.SerializerMethodField()
-    belong_to = StringSerializer(many=True)
+    groups = StringSerializer(many=True)
     prize_to_win = StringSerializer(many=True)
 
     class Meta:

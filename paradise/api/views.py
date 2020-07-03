@@ -99,7 +99,17 @@ class Competition_GroupDetailView(RetrieveAPIView):
 class CompetitionListView(ListAPIView):
     permission_classes = (AllowAny, )
     serializer_class = CompetitionSerializer
-    queryset = Competition.objects.all()
+    queryset = Competition.objects.filter(isActive=True)
+
+
+class FeaturedCompetitionListView(ListAPIView):
+    permission_classes = (AllowAny, )
+    serializer_class = CompetitionSerializer
+
+    def get_queryset(self):
+        qs = Competition.objects.filter(isActive=True)
+        featured_qs = qs.filter(isFeatured=True)
+        return featured_qs
 
 
 class CompetitionDetailView(RetrieveAPIView):

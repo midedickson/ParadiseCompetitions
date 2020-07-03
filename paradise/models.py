@@ -134,8 +134,8 @@ class Competition(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField()
     prize_to_win = models.ManyToManyField(Prize)
-    belong_to = models.ManyToManyField(
-        Competition_Group, related_name='Competitons')
+    groups = models.ManyToManyField(
+        Competition_Group, related_name='competitions')
     date_created = models.DateTimeField(auto_now_add=True)
     isFeatured = models.BooleanField(default=False)
     isActive = models.BooleanField(default=True)
