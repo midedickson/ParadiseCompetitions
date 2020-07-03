@@ -15,18 +15,20 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from paradise.models import *
 from .serializers import(
-    CouponSerializer, ProductSerializer, ProductDetailSerializer, OrderItemSerializer, OrderSerializer, 
+    CouponSerializer, ProductSerializer, OrderItemSerializer, OrderSerializer,
     ShippingAddressSerializer, Competition_GroupSerializer, PrizeSerializer, CompetitionSerializer
 )
+
 
 class ProductListView(ListAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+
 class ProductDetailView(RetrieveAPIView):
     permission_classes = (AllowAny,)
-    serializer_class = ProductDetailSerializer
+    serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
 
@@ -41,24 +43,29 @@ class OrderDetailView(RetrieveAPIView):
 
     def get_object(self):
         try:
-            order = Order.objects.get(customer=self.request.user, complete=False)
+            order = Order.objects.get(
+                customer=self.request.user, complete=False)
             return order
         except ObjectDoesNotExist:
             raise Http404("You do not have an active order")
 
+
 class CountryListView(APIView):
     def get(self, request, *args, **kwargs):
         return Response(countries, status=HTTP_200_OK)
-    
+
+
 class ShippingAddressListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ShippingAddressSerializer
     queryset = ShippingAddress.objects.all()
 
+
 class ShippingAddressCreateView(CreateAPIView):
     permission_classes = (IsAuthenticated, )
     serializer_class = ShippingAddressSerializer
     queryset = ShippingAddress.objects.all()
+
 
 class ShippingAddressUpdateView(UpdateAPIView):
     permission_classes = (IsAuthenticated, )
@@ -70,23 +77,32 @@ class ShippingAddressDeleteView(DestroyAPIView):
     permission_classes = (IsAuthenticated, )
     queryset = ShippingAddress.objects.all()
 
+
 class CouponCreateView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = CouponSerializer
     queryset = Coupon.objects.all()
 
+
 class Competition_GroupView(ListAPIView):
-    permission_classes  = (AllowAny,)
+    permission_classes = (AllowAny,)
     serializer_class = Competition_GroupSerializer
     queryset = Competition_Group.objects.all()
 
+
 class Competition_GroupDetailView(RetrieveAPIView):
-    permission_classes  = (AllowAny,)
+    permission_classes = (AllowAny,)
     serializer_class = Competition_GroupSerializer
     queryset = Competition_Group.objects.all()
 
 
 class CompetitionListView(ListAPIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (AllowAny, )
+    serializer_class = CompetitionSerializer
+    queryset = Competition.objects.all()
+
+
+class CompetitionDetailView(RetrieveAPIView):
+    permission_classes = (AllowAny, )
     serializer_class = CompetitionSerializer
     queryset = Competition.objects.all()

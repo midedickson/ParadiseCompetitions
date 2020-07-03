@@ -1,4 +1,5 @@
 from django.db import models
+import random
 from django.contrib.auth.models import User
 
 
@@ -24,8 +25,9 @@ class Coupon(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=150)
     digital = models.BooleanField(default=False)
-    descrption = models.TextField()
-    image = models.ImageField(upload_to='', null=True, blank=True)
+    description = models.TextField()
+    image = models.ImageField(
+        upload_to='product_images', null=True, blank=True)
     quantity = models.IntegerField(default=5)
     slug = models.SlugField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -54,7 +56,6 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     coupon = models.ForeignKey
     complete = models.BooleanField(default=False)
-    transaction_id = models.CharField(max_length=100, null=True, unique=True)
 
     @property
     def shipping(self):
@@ -123,7 +124,7 @@ class Competition_Group(models.Model):
 
 class Prize(models.Model):
     title = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='', null=True, blank=True)
+    image = models.ImageField(upload_to='prizes/', null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -158,3 +159,9 @@ class Competition(models.Model):
         if self.allow_discount:
             price = self.discount_price
         return price
+
+    @property
+    def get_associated_product(self):
+        dig_product = Product.objects.filter(digital=True)
+        associated_product = random.choice(dig_product)
+        return associated_product
