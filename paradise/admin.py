@@ -8,7 +8,7 @@ class CompetitionAdmin(admin.ModelAdmin):
     list_display_links = ('title', 'description')
     list_editable = ('slug',)
     search_fields = ('title', 'slug')
-    filter_horizontal = ('prize_to_win', 'groups')
+    filter_horizontal = ('groups')
     list_filter = ('isActive', 'isFeatured')
 
 
