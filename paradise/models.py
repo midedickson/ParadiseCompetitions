@@ -133,7 +133,8 @@ class Prize(models.Model):
 class Competition(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField()
-    prize_to_win = models.ForeignKey(Prize, on_delete=models.CASCADE)
+    prize_to_win = models.ForeignKey(
+        Prize, on_delete=models.CASCADE, default=2)
     groups = models.ManyToManyField(
         Competition_Group, related_name='competitions')
     date_created = models.DateTimeField(auto_now_add=True)
