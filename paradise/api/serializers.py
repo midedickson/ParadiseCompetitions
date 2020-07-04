@@ -97,7 +97,7 @@ class Competition_GroupSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_competitions(slef, obj):
-        return CompetitionSerializer(obj.competitions.all(), many=True).data
+        return CompetitionSerializer(obj.competitions.filter(isActive=True), many=True).data
 
 
 class PrizeSerializer(serializers.ModelSerializer):
