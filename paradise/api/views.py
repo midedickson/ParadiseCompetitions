@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from paradise.models import *
 from .serializers import(
-    CouponSerializer, ProductSerializer, OrderItemSerializer, OrderSerializer,
+    CouponSerializer, EcardSerializer, ProductSerializer, OrderItemSerializer, OrderSerializer,
     ShippingAddressSerializer, Competition_GroupSerializer, PrizeSerializer, CompetitionSerializer
 )
 
@@ -116,3 +116,8 @@ class CompetitionDetailView(RetrieveAPIView):
     permission_classes = (AllowAny, )
     serializer_class = CompetitionSerializer
     queryset = Competition.objects.all()
+
+class EcardListView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = EcardSerializer
+    queryset = Ecard.objects.all()

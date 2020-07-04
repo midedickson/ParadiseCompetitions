@@ -5,6 +5,7 @@ from paradise.api.views import (
     OrderItemDeleteView,
     Competition_GroupView,
     OrderDetailView,
+    EcardListView,
     CompetitionListView,
     CountryListView,
     Competition_GroupDetailView,
@@ -34,5 +35,5 @@ urlpatterns = [
     path('featured_competition_list/',
          FeaturedCompetitionListView.as_view(), name='competition'),
     path('competition/<pk>/', CompetitionDetailView.as_view(), name='competition'),
-
+    path('ecard/', EcardListView.as_view(), name='ecard') 
 ]
