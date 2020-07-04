@@ -121,3 +121,29 @@ class EcardListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EcardSerializer
     queryset = Ecard.objects.all()
+
+class AddToCartView(APIView):
+    def post(self, request, *args, **kwargs):
+        slug = request.data.get('slug', None)
+        if slug is None:
+            return Response({"message": "Invalid request"}, status=HTTP_400_BAD_REQUEST)
+
+        product = get_object_or_404(Product, slug=slug)
+
+        order_item_qs = OrderItem.objects.filter(
+            product = product,
+        )
+        if order_item_qs.exists():
+            order_item = order_item_qs.first()
+            order_item.quantity +=1
+            order_item.save()
+
+        else:
+            order_item = OrderItem.objects.create(
+                product=product,
+            )
+            order_item.save()
+        order_qs = Order.objects.filter(customer=request.user, complete=False)
+        if order_qs.exists():
+            pass
+            
