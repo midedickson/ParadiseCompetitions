@@ -109,11 +109,17 @@ class PrizeSerializer(serializers.ModelSerializer):
         )
 
 
+class EcardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ecard
+        fields = '__all__'
+
+
 class CompetitionSerializer(serializers.ModelSerializer):
     net_price = serializers.SerializerMethodField()
     associated_product = serializers.SerializerMethodField()
     groups = StringSerializer(many=True)
-    prize_to_win = StringSerializer(many=True)
+    prize_to_win = serializers.SerializerMethodField()
 
     class Meta:
         model = Competition
@@ -125,7 +131,5 @@ class CompetitionSerializer(serializers.ModelSerializer):
     def get_associated_product(self, obj):
         return EcardSerializer(obj.get_associated_product, many=False).data
 
-class EcardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ecard
-        fields = '__all__'
+    def get_prize_to_win(self, obj):
+        return PrizeSerializer(obj.prize_to_win, many=False).data
