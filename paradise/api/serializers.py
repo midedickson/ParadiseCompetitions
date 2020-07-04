@@ -123,4 +123,9 @@ class CompetitionSerializer(serializers.ModelSerializer):
         return obj.get_net_price
 
     def get_associated_product(self, obj):
-        return ProductSerializer(obj.get_associated_product, many=False).data
+        return EcardSerializer(obj.get_associated_product, many=False).data
+
+class EcardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ecard
+        fields = '__all__'

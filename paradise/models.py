@@ -162,6 +162,13 @@ class Competition(models.Model):
 
     @property
     def get_associated_product(self):
-        dig_product = Product.objects.filter(digital=True)
-        associated_product = random.choice(dig_product)
+        ecard = Ecard.objects.all()
+        associated_product = random.choice(ecard)
         return associated_product
+
+class Ecard(models.Model):
+    title = models.CharField(max_length=150)
+    image = models.ImageField(upload_to='media')
+
+    def __str__(self):
+        return self.titl

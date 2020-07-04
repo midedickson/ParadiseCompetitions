@@ -5,6 +5,7 @@ from paradise.api.views import (
     OrderItemDeleteView,
     Competition_GroupView,
     OrderDetailView,
+    EcardListView,
     CompetitionListView,
     CountryListView,
     Competition_GroupDetailView,
@@ -14,7 +15,8 @@ from paradise.api.views import (
     ShippingAddressUpdateView,
     CouponCreateView,
     CompetitionDetailView,
-    FeaturedCompetitionListView
+    FeaturedCompetitionListView,
+    AddToCartView
 )
 urlpatterns = [
     path('order-summary/', OrderDetailView.as_view(), name='order-summary'),
@@ -34,5 +36,6 @@ urlpatterns = [
     path('featured_competition_list/',
          FeaturedCompetitionListView.as_view(), name='competition'),
     path('competition/<pk>/', CompetitionDetailView.as_view(), name='competition'),
-
+    path('ecard/', EcardListView.as_view(), name='ecard'),
+    path('add-to-cart/', AddToCartView.as_view(), name='add-to-cart')
 ]
