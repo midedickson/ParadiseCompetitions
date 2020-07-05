@@ -61,7 +61,7 @@ class Competition_Group(models.Model):
 
 class Ecard(models.Model):
     title = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='media')
+    image = models.ImageField(upload_to='ecards')
 
     def __str__(self):
         return self.title
@@ -73,7 +73,7 @@ class Competition(models.Model):
     prize_to_win = models.ForeignKey(
         Prize, on_delete=models.CASCADE)
     groups = models.ManyToManyField(
-        Competition_Group, related_name='competitions')
+        Competition_Group, related_name='competitions', null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     isFeatured = models.BooleanField(default=False)
     isActive = models.BooleanField(default=True)
