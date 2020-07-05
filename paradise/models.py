@@ -3,16 +3,6 @@ import random
 from django.contrib.auth.models import User
 
 
-class Customer(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, null=True)
-    email = models.EmailField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
-
 class Coupon(models.Model):
     code = models.CharField(max_length=15)
     amount = models.FloatField()
@@ -50,11 +40,77 @@ class Product(models.Model):
             return self.price
 
 
+class Prize(models.Model):
+    title = models.CharField(max_length=150)
+    image = models.ImageField(upload_to='prizes/', null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class Competition_Group(models.Model):
+    name = models.CharField(max_length=150)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Competition Group'
+
+    def __str__(self):
+        return self.name
+
+
+class Ecard(models.Model):
+    title = models.CharField(max_length=150)
+    image = models.ImageField(upload_to='media')
+
+    def __str__(self):
+        return self.title
+
+
+class Competition(models.Model):
+    title = models.CharField(max_length=200, blank=False, null=False)
+    slug = models.SlugField()
+    prize_to_win = models.ForeignKey(
+        Prize, on_delete=models.CASCADE)
+    groups = models.ManyToManyField(
+        Competition_Group, related_name='competitions')
+    date_created = models.DateTimeField(auto_now_add=True)
+    isFeatured = models.BooleanField(default=False)
+    isActive = models.BooleanField(default=True)
+    description = models.TextField()
+    expiration_date = models.DateTimeField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount_price = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True)
+    discount_text = models.CharField(max_length=30)
+    allow_discount = models.BooleanField(default=False)
+    no_of_winners = models.IntegerField(default=1)
+
+    class Meta:
+        ordering = ['-date_created']
+
+    def __str__(self):
+        return self.title
+
+    @ property
+    def get_net_price(self):
+        price = self.price
+        if self.allow_discount:
+            price = self.discount_price
+        return price
+
+    @property
+    def get_associated_product(self):
+        ecards = Ecard.objects.all()
+        associated_product = random.choice(ecards)
+        return associated_product
+
+
 class Order(models.Model):
     customer = models.ForeignKey(
-        Customer, on_delete=models.SET_NULL, null=True, blank=True)
+        User, on_delete=models.CASCADE)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    coupon = models.ForeignKey
+    coupon = models.ManyToManyField(Coupon)
     complete = models.BooleanField(default=False)
 
     @property
@@ -86,9 +142,11 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
+    competition = models.ForeignKey(
+        Competition, on_delete=models.CASCADE)
+    selected_ticket = models.CharField(max_length=4)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)
 
     @property
@@ -99,7 +157,7 @@ class OrderItem(models.Model):
 
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(
-        Customer, on_delete=models.SET_NULL, null=True)
+        User, on_delete=models.CASCADE, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     address = models.CharField(max_length=200, null=False)
     city = models.CharField(max_length=200, null=False)
@@ -111,66 +169,7 @@ class ShippingAddress(models.Model):
         return self.address
 
 
-class Competition_Group(models.Model):
-    name = models.CharField(max_length=150)
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'Competition Group'
-
-    def __str__(self):
-        return self.name
-
-
-class Prize(models.Model):
-    title = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='prizes/', null=True, blank=True)
-
-    def __str__(self):
-        return self.title
-
-
-class Competition(models.Model):
-    title = models.CharField(max_length=200, blank=False, null=False)
-    slug = models.SlugField()
-    prize_to_win = models.ForeignKey(
-        Prize, on_delete=models.CASCADE, default=2)
-    groups = models.ManyToManyField(
-        Competition_Group, related_name='competitions')
-    date_created = models.DateTimeField(auto_now_add=True)
-    isFeatured = models.BooleanField(default=False)
-    isActive = models.BooleanField(default=True)
-    description = models.TextField()
-    expiration_date = models.DateTimeField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    discount_price = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True)
-    discount_text = models.CharField(max_length=30)
-    allow_discount = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ['-date_created']
-
-    def __str__(self):
-        return self.title
-
-    @ property
-    def get_net_price(self):
-        price = self.price
-        if self.allow_discount:
-            price = self.discount_price
-        return price
-
-    @property
-    def get_associated_product(self):
-        ecards = Ecard.objects.all()
-        associated_product = random.choice(ecards)
-        return associated_product
-
-
-class Ecard(models.Model):
-    title = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='media')
-
-    def __str__(self):
-        return self.title
+class Winner(models.Model):
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    winning_ticket = models.CharField(max_length=4)

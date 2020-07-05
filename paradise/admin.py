@@ -4,20 +4,29 @@ from .models import *
 
 class CompetitionAdmin(admin.ModelAdmin):
     date_hierarchy = 'date_created'
-    list_display = ('title', 'slug', 'description')
-    list_display_links = ('title', 'description')
-    list_editable = ('slug',)
-    search_fields = ('title', 'slug')
+    list_display = ('title', 'price', 'discount_price', 'expiration_date')
+    list_display_links = ('title', )
+    list_editable = ('price', 'discount_price', 'expiration_date')
+    search_fields = ('title', )
     filter_horizontal = ('groups', )
-    list_filter = ('isActive', 'isFeatured')
+    list_filter = ('isActive', 'isFeatured', 'groups')
 
 
-admin.site.register(Customer)
-admin.site.register(Product)
-admin.site.register(Prize)
-admin.site.register(Competition, CompetitionAdmin)
-admin.site.register(Competition_Group)
-admin.site.register(OrderItem)
-admin.site.register(Order)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('competition', 'quantity', 'selected_ticket')
+
+
+class OrderAdmin(admin.ModelAdmin):
+    date_hierarchy = 'date_ordered'
+    list_display = ('customer', 'complete')
+
+
 admin.site.register(Coupon)
+admin.site.register(Product)
+admin.site.register(Ecard)
+admin.site.register(Prize)
+admin.site.register(Competition_Group)
+admin.site.register(Competition, CompetitionAdmin)
+admin.site.register(Order, OrderAdmin)
+admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(ShippingAddress)

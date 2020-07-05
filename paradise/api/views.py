@@ -117,33 +117,32 @@ class CompetitionDetailView(RetrieveAPIView):
     serializer_class = CompetitionSerializer
     queryset = Competition.objects.all()
 
+
 class EcardListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EcardSerializer
     queryset = Ecard.objects.all()
 
+
 class AddToCartView(APIView):
     def post(self, request, *args, **kwargs):
-        slug = request.data.get('slug', None)
-        if slug is None:
+        pk = request.data.get('pk', None)
+        if pk is None:
             return Response({"message": "Invalid request"}, status=HTTP_400_BAD_REQUEST)
 
-        product = get_object_or_404(Product, slug=slug)
-
+        competition = get_object_or_404(Competition, id=pk)
+        current_order, created = Order.objects.get_or_create(
+            customer=request.user, complete=False)
         order_item_qs = OrderItem.objects.filter(
-            product = product,
+            customer=request.user, competition=competition
         )
         if order_item_qs.exists():
             order_item = order_item_qs.first()
-            order_item.quantity +=1
+            order_item.quantity += 1
             order_item.save()
 
         else:
             order_item = OrderItem.objects.create(
-                product=product,
+                order=current_order, customer=request.user, competition=competition
             )
             order_item.save()
-        order_qs = Order.objects.filter(customer=request.user, complete=False)
-        if order_qs.exists():
-            pass
-            
