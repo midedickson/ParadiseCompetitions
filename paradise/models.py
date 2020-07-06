@@ -133,7 +133,8 @@ class Prize(models.Model):
 class Competition(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField()
-    prize_to_win = models.ManyToManyField(Prize)
+    prize_to_win = models.ForeignKey(
+        Prize, on_delete=models.CASCADE, default=2)
     groups = models.ManyToManyField(
         Competition_Group, related_name='competitions')
     date_created = models.DateTimeField(auto_now_add=True)
@@ -162,13 +163,14 @@ class Competition(models.Model):
 
     @property
     def get_associated_product(self):
-        ecard = Ecard.objects.all()
-        associated_product = random.choice(ecard)
+        ecards = Ecard.objects.all()
+        associated_product = random.choice(ecards)
         return associated_product
+
 
 class Ecard(models.Model):
     title = models.CharField(max_length=150)
     image = models.ImageField(upload_to='media')
 
     def __str__(self):
-        return self.titl
+        return self.title
