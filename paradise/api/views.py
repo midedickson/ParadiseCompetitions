@@ -125,6 +125,7 @@ class EcardListView(ListAPIView):
 
 
 class AddToCartView(APIView):
+    ### still in progress
     def post(self, request, *args, **kwargs):
         pk = request.data.get('pk', None)
         if pk is None:
@@ -133,10 +134,16 @@ class AddToCartView(APIView):
         competition = get_object_or_404(Competition, id=pk)
         current_order, created = Order.objects.get_or_create(
             customer=request.user, complete=False)
-        order_item_qs = OrderItem.objects.filter(
-            customer=request.user, competition=competition
-        )
+        order_item_qs = OrderItem.objects.filter(competition=competition)
+        user_order_item_qs = order_item_qs.filter(customer=request.user)
+        selected_ticket = request.data.get('selected_ticket', None)
         if order_item_qs.exists():
+            selected = True
+            for order_item in order_item_qs:
+                if selected_ticket == order_item.selected_ticket:
+                    return Response({'message': 'Ticket has been purchasd, Kindly Choose another!'})
+                else:
+                    pass
             order_item = order_item_qs.first()
             order_item.quantity += 1
             order_item.save()

@@ -1,7 +1,13 @@
 from django_countries.serializer_fields import CountryField
 from rest_framework import serializers
 from core.models import (
-    Address, Item, Order, OrderItem, Coupon, Variation, ItemVariation,
+    Address,
+    Item,
+    Order,
+    OrderItem,
+    Coupon,
+    Variation,
+    ItemVariation,
     Payment
 )
 
@@ -38,7 +44,6 @@ class ItemSerializer(serializers.ModelSerializer):
             'description',
             'image'
         )
-
 
     def get_category(self, obj):
         return obj.get_category_display()
