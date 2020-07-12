@@ -1,11 +1,10 @@
 import React from "react";
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from "react-bootstrap/Nav"
-import Container from 'react-bootstrap/Container'
-import logo from "../assets/imgs/palmtree.png"
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import Container from "react-bootstrap/Container";
+import logo from "../assets/imgs/palmtree.png";
 
 const Navigation = () => {
-
   return (
     <Navbar collapseOnSelect expand="lg" bg="black" variant="black">
       <Container>
@@ -16,11 +15,14 @@ const Navigation = () => {
             height="40"
             className="d-inline-block align-top"
             src={logo}
-          />{' '}
-        Paradise Competitions
-      </Navbar.Brand>
+          />{" "}
+          Paradise Competitions
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+        <Navbar.Collapse
+          id="responsive-navbar-nav"
+          className="justify-content-end"
+        >
           <Nav>
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/competitions">Competitions</Nav.Link>
@@ -33,8 +35,7 @@ const Navigation = () => {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-
-  )
-}
+  );
+};
 
 export default Navigation;
