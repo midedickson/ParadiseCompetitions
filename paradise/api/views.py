@@ -124,7 +124,7 @@ class EcardListView(ListAPIView):
     queryset = Ecard.objects.all()
 
 
-class AddToCartView(APIView):
+class AddCompetitionToCartView(APIView):
     ### still in progress
     def post(self, request, *args, **kwargs):
         pk = request.data.get('pk', None)
@@ -135,21 +135,21 @@ class AddToCartView(APIView):
         current_order, created = Order.objects.get_or_create(
             customer=request.user, complete=False)
         order_item_qs = OrderItem.objects.filter(competition=competition)
-        user_order_item_qs = order_item_qs.filter(customer=request.user)
         selected_ticket = request.data.get('selected_ticket', None)
-        if order_item_qs.exists():
-            selected = True
-            for order_item in order_item_qs:
-                if selected_ticket == order_item.selected_ticket:
-                    return Response({'message': 'Ticket has been purchasd, Kindly Choose another!'})
-                else:
-                    pass
-            order_item = order_item_qs.first()
-            order_item.quantity += 1
-            order_item.save()
+        valid = True
+        for order_item in order_item_qs:
+            if selected_ticket == order_item.selected_ticket:
+                valid = False
+                break
+            else:
+                continue
 
-        else:
+        if valid:
             order_item = OrderItem.objects.create(
-                order=current_order, customer=request.user, competition=competition
+                order=current_order, customer=request.user, competition=competition, selected_ticket=selected_ticket
             )
             order_item.save()
+            return Response({'message': 'Ticket has been Booked, you have 10mins to checkout your cart'}, status=HTTP_200_OK)
+
+        else:
+            return Response({'message': 'Ticket has been purchased, Kindly Choose another!'}, status=HTTP_400_BAD_REQUEST)

@@ -9,7 +9,7 @@ from .views import (ProductDetailView,
                     ShippingAddressListView,
                     ShippingAddressUpdateView,
                     AddCouponView,
-                    AddToCartView)
+                    AddCompetitionToCartView)
 
 urlpatterns = [
     path('addresses/', ShippingAddressListView.as_view(), name='address-list'),
@@ -21,6 +21,7 @@ urlpatterns = [
          ShippingAddressDeleteView.as_view(), name='address-delete'),
     path('products/', ProductListView.as_view(), name='product-list'),
     path('products/<pk>/', ProductDetailView.as_view(), name='product-detail'),
-    path('add-to-cart/<pk>/', AddToCartView.as_view(), name='add-to-cart')
+    path('add-competition-to-cart/<pk>/',
+         AddCompetitionToCartView.as_view(), name='add-to-cart')
 
 ]
