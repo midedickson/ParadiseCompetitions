@@ -42,7 +42,7 @@ const LandCarousel = ({ featured, getFeatured }) => {
 
 const mapStateToProps = (state) => {
   return {
-    featured: state.competition.featuredCompetition
+    featured: state.competition.featuredCompetition || []
   }
 }
 

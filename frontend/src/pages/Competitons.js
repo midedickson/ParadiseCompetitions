@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import  { Link } from 'react-router-dom';
 import Header from '../components/Heading'
-import Image from '../assets/imgs/bottle.jpg'
 import {
   Row,
   Card,
@@ -24,8 +23,9 @@ const Competitions = ({ competitions, getCompetitions }) => {
       <Row>
         {
           competitions.map((val, i) => (
-            <Col md="6" lg="3">
-              <Card className="competition" style={{}}>
+            <Col md="6" lg="3" key={val.id}>
+            <Link to={`/competitions/${val.id}`}>
+              <Card className="competition">
                 <Card.Img variant="top" src={val.associated_product.image} height="100" width="180" />
                 <Card.Body>
                   <Card.Title>{val.title}</Card.Title>
@@ -34,6 +34,7 @@ const Competitions = ({ competitions, getCompetitions }) => {
                   </Card.Text>
                 </Card.Body>
               </Card>
+            </Link>
             </Col>
           ))
         }

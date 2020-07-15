@@ -15,7 +15,6 @@ const Layout = ({ children }) => {
         </Container>
         <Footer />
       </Provider>
-
     </>
   )
 }
