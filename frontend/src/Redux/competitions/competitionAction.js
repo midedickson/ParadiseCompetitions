@@ -1,5 +1,11 @@
 import { fetchCompetition, fetchCompetitions, fetchFeatured } from "../../API/competitionApi";
-import { COMPETITION_LOADING, COMPETITION_LOAD_ERROR, COMPETITIONS_LOAD_SUCCESS, FEATURED_LOAD_SUCCESS } from "./competitionTypes";
+import { 
+  COMPETITION_LOADING,
+  COMPETITION_LOAD_ERROR, 
+  COMPETITIONS_LOAD_SUCCESS,
+  COMPETITION_LOAD_SUCCESS,
+  FEATURED_LOAD_SUCCESS
+} from "./competitionTypes";
 
 export const competitionLoading = () => {
   return {
@@ -9,12 +15,17 @@ export const competitionLoading = () => {
 
 export const competitionLoadSuccess = (data) => {
   return {
+    type: COMPETITION_LOAD_SUCCESS,
+    payload: data
+  }
+}
+
+export const competitionsLoadSuccess = (data) => {
+  return {
     type: COMPETITIONS_LOAD_SUCCESS,
     payload: data
   }
-
 }
-
 
 export const featuredLoadSuccess = (data) => {
   return {
@@ -45,7 +56,7 @@ export const getCompetitions = () => {
   return (dispatch) => {
     dispatch(competitionLoading());
     return fetchCompetitions().then(res => {
-      dispatch(competitionLoadSuccess(res))
+      dispatch(competitionsLoadSuccess(res))
     }).catch(error => dispatch(competitionLoadError(error)))
   }
 }
