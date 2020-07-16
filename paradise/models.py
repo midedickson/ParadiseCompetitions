@@ -67,6 +67,44 @@ class Ecard(models.Model):
         return self.title
 
 
+TICKET_LETTERS = (
+    ('A', 'A'),
+    ('B', 'B'),
+    ('C', 'C'),
+    ('D', 'D'),
+    ('E', 'E'),
+    ('F', 'F'),
+    ('G', 'G'),
+    ('H', 'H'),
+    ('I', 'I'),
+    ('J', 'J'),
+    ('K', 'K'),
+    ('L', 'L'),
+    ('M', 'M'),
+    ('N', 'N'),
+    ('O', 'O'),
+    ('P', 'P'),
+    ('Q', 'Q'),
+    ('R', 'R'),
+    ('S', 'S'),
+    ('T', 'T'),
+    ('U', 'U'),
+    ('V', 'V'),
+    ('X', 'X'),
+    ('Y', 'Y'),
+    ('Z', 'Z'),
+)
+
+TICKET_NUMBERS = (
+    ('100', '00 - 99'),
+    ('200', '000 - 199'),
+    ('300', '000 - 299'),
+    ('400', '000 - 399'),
+    ('500', '000 - 499'),
+    ('600', '000 - 599'),
+)
+
+
 class Competition(models.Model):
     title = models.CharField(max_length=200, blank=False, null=False)
     slug = models.SlugField()
@@ -75,6 +113,12 @@ class Competition(models.Model):
     groups = models.ManyToManyField(
         Competition_Group, related_name='competitions', null=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    ticket_start = models.CharField(
+        choices=TICKET_LETTERS, max_length=1, default='A')
+    ticket_end = models.CharField(
+        choices=TICKET_LETTERS, max_length=1, default='E')
+    ticket_numbers = models.CharField(
+        choices=TICKET_NUMBERS, max_length=3, default='100')
     isFeatured = models.BooleanField(default=False)
     isActive = models.BooleanField(default=True)
     description = models.TextField()
@@ -178,3 +222,8 @@ class Winner(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     winning_ticket = models.CharField(max_length=4)
+
+
+class HowToPLay(models.Model):
+    header = models.CharField(max_length=100)
+    body = models.TextField(max_length=1000)
