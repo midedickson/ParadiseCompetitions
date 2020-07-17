@@ -1,7 +1,7 @@
 from django.db import models
 import random
 from django.contrib.auth.models import User
-
+from django.shortcuts import reverse
 
 class Coupon(models.Model):
     code = models.CharField(max_length=15)
@@ -153,6 +153,11 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.net_price * self.quantity
         return total
+
+    def get_remove_from_cart_url(self):
+        return reverse("core:remove-from-cart", kwargs={
+            'slug': self.slug
+        })
 
 
 class ShippingAddress(models.Model):

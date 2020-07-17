@@ -153,3 +153,25 @@ class AddCompetitionToCartView(APIView):
 
         else:
             return Response({'message': 'Ticket has been purchased, Kindly Choose another!'}, status=HTTP_400_BAD_REQUEST)
+
+
+class RemoveCompetitionFromCartView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        pk = request.data.get('pk', None)
+        if pk is None:
+            return Response({"message": "Invalids request"}, status=HTTP_400_BAD_REQUEST)
+        competition = get_object_or_404(Competition, id=pk)
+        order_item_qs = OrderItem.objects.filter(competition=competition)
+        selected_ticket = request.data.get('selected_ticket', None)
+        valid = True
+
+        if valid:
+            order_item = OrderItem.objects.filter(
+                competition=competition, selected_ticket=selected_ticket
+            )
+            order_item.delete()
+            return Response({'message': 'Ticket has been Removed'}, status=HTTP_200_OK)
+
+        else:
+            return Response({'message': 'No active ticket!'}, status=HTTP_400_BAD_REQUEST)
