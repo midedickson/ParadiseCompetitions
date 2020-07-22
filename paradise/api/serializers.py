@@ -120,9 +120,9 @@ class CompetitionSerializer(serializers.ModelSerializer):
     associated_product = serializers.SerializerMethodField()
     groups = StringSerializer(many=True)
     prize_to_win = serializers.SerializerMethodField()
-    ticket_start = serializers.SerializerMethodField()
-    ticket_end = serializers.SerializerMethodField()
-    ticket_numbers = serializers.SerializerMethodField()
+    ticket_letter_start = serializers.SerializerMethodField()
+    ticket_letter_end = serializers.SerializerMethodField()
+    tickets_per_letter = serializers.SerializerMethodField()
 
     class Meta:
         model = Competition
@@ -137,11 +137,11 @@ class CompetitionSerializer(serializers.ModelSerializer):
     def get_prize_to_win(self, obj):
         return PrizeSerializer(obj.prize_to_win, many=False).data
 
-    def get_ticket_start(self, obj):
-        return obj.get_ticket_start_display()
+    def get_ticket_letter_start(self, obj):
+        return obj.get_ticket_letter_start_display()
 
-    def get_ticket_end(self, obj):
-        return obj.get_ticket_end_display()
+    def get_ticket_letter_end(self, obj):
+        return obj.get_ticket_letter_end_display()
 
-    def get_ticket_numbers(self, obj):
-        return obj.get_ticket_numbers_display()
+    def get_tickets_per_letter(self, obj):
+        return obj.get_tickets_per_letter_display()

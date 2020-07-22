@@ -3,6 +3,7 @@ import random
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 
+
 class Coupon(models.Model):
     code = models.CharField(max_length=15)
     amount = models.FloatField()
@@ -95,13 +96,14 @@ TICKET_LETTERS = (
     ('Z', 'Z'),
 )
 
-TICKET_NUMBERS = (
-    ('100', '00 - 99'),
-    ('200', '000 - 199'),
-    ('300', '000 - 299'),
-    ('400', '000 - 399'),
-    ('500', '000 - 499'),
-    ('600', '000 - 599'),
+TICKET_CHOICES = (
+    ('100', '100'),
+    ('200', '200'),
+    ('300', '300'),
+    ('400', '400'),
+    ('500', '500'),
+    ('600', '600'),
+
 )
 
 
@@ -111,14 +113,14 @@ class Competition(models.Model):
     prize_to_win = models.ForeignKey(
         Prize, on_delete=models.CASCADE)
     groups = models.ManyToManyField(
-        Competition_Group, related_name='competitions', null=True)
+        Competition_Group, related_name='competitions')
     date_created = models.DateTimeField(auto_now_add=True)
-    ticket_start = models.CharField(
+    ticket_letter_start = models.CharField(
         choices=TICKET_LETTERS, max_length=1, default='A')
-    ticket_end = models.CharField(
+    ticket_letter_end = models.CharField(
         choices=TICKET_LETTERS, max_length=1, default='E')
-    ticket_numbers = models.CharField(
-        choices=TICKET_NUMBERS, max_length=3, default='100')
+    tickets_per_letter = models.CharField(
+        choices=TICKET_CHOICES, max_length=3, default='100')
     isFeatured = models.BooleanField(default=False)
     isActive = models.BooleanField(default=True)
     description = models.TextField()

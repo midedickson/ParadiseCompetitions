@@ -8,7 +8,8 @@ class MyBackend(BaseBackend):
             user = User.objects.get(email=username)
             if user.check_password(password):
                 return user
-            return None
+            else:
+                return None
         except User.DoesNotExist:
             return None
 
