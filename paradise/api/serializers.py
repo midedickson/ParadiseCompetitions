@@ -42,6 +42,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
         fields = (
+            'id',
             'competition',
             'selected_ticket',
             'total',
@@ -60,6 +61,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
+            'id',
             'cart_items',
             'cart_total',
             'coupon',
