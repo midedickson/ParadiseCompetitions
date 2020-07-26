@@ -37,17 +37,19 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class OrderItemSerializer(serializers.ModelSerializer):
     total = serializers.SerializerMethodField()
+    competition = StringSerializer(many=False)
 
     class Meta:
         model = OrderItem
         fields = (
-            'product',
+            'competition',
+            'selected_ticket',
             'total',
             'quantity',
         )
 
     def get_total(self, obj):
-        return obj.get_total()
+        return obj.get_total
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -58,16 +60,16 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
-            'order_items',
+            'cart_items',
             'cart_total',
             'coupon',
         )
 
     def get_cart_items(self, obj):
-        return OrderItemSerializer(obj.items.all(), many=True).data
+        return OrderItemSerializer(obj.orderitem_set.all(), many=True).data
 
     def get_cart_total(self, obj):
-        return obj.get_total()
+        return obj.get_cart_total
 
     def get_coupon(self, obj):
         if obj.coupon is not None:

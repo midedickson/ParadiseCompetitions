@@ -132,7 +132,7 @@ class AddCompetitionToCartView(APIView):
 
         competition = get_object_or_404(Competition, id=pk)
         current_order, created = Order.objects.get_or_create(
-            customer=request.user, complete=False)
+            customer=self.request.user, complete=False)
         order_item_qs = OrderItem.objects.filter(competition=competition)
         selected_ticket = request.data.get('selected_ticket', None)
         valid = True
@@ -145,7 +145,7 @@ class AddCompetitionToCartView(APIView):
 
         if valid:
             order_item = OrderItem.objects.create(
-                order=current_order, customer=request.user, competition=competition, selected_ticket=selected_ticket
+                order=current_order, competition=competition, selected_ticket=selected_ticket
             )
             order_item.save()
             return Response({'message': 'Ticket has been Booked, you have 10mins to checkout your cart'}, status=HTTP_200_OK)
@@ -161,7 +161,7 @@ class RemoveCompetitionFromCartView(APIView):
             return Response({"message": "Invalid request"}, status=HTTP_400_BAD_REQUEST)
         order_item = OrderItem.objects.get(id=id)
 
-        if order_item.exists():
+        if OrderItem.objects.filter(id=order_item.id).exists():
             order_item.delete()
             return Response({'message': 'Order has been Cancelled'}, status=HTTP_200_OK)
 
@@ -171,12 +171,14 @@ class RemoveCompetitionFromCartView(APIView):
 
 class SelectedTickets(APIView):
     def get(self, request, *args, **kwargs):
-        competition_id = self.request.query_params.get('competition_id', None)
+        competition_id = request.data.get('competition_id', None)
         tickets_selected = []
         if competition_id is not None:
             competition = Competition.objects.get(id=competition_id)
             order_item_qs = OrderItem.objects.filter(competition=competition)
-        for item in order_item_qs:
-            ticket = item.selected_ticket
-            tickets_selected.append(ticket)
-        return tickets_selected
+            for item in order_item_qs:
+                ticket = item.selected_ticket
+                tickets_selected.append(ticket)
+            return Response({"tickets_selected": tickets_selected})
+        else:
+            return Response({"message": "No Competition with this id"})

@@ -125,9 +125,8 @@ class Competition(models.Model):
     isActive = models.BooleanField(default=True)
     description = models.TextField()
     expiration_date = models.DateTimeField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    discount_price = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True)
+    price = models.FloatField()
+    discount_price = models.FloatField(null=True, blank=True)
     discount_text = models.CharField(max_length=30)
     allow_discount = models.BooleanField(default=False)
     no_of_winners = models.IntegerField(default=1)
@@ -156,7 +155,7 @@ class Order(models.Model):
     customer = models.ForeignKey(
         User, on_delete=models.CASCADE)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    coupon = models.ManyToManyField(Coupon)
+    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
     complete = models.BooleanField(default=False)
 
     @property
@@ -197,13 +196,8 @@ class OrderItem(models.Model):
 
     @property
     def get_total(self):
-        total = self.product.net_price * self.quantity
+        total = self.competition.get_net_price * self.quantity
         return total
-
-    def get_remove_from_cart_url(self):
-        return reverse("core:remove-from-cart", kwargs={
-            'slug': self.slug
-        })
 
 
 class ShippingAddress(models.Model):
