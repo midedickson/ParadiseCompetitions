@@ -47,6 +47,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             'selected_ticket',
             'total',
             'quantity',
+            'date_added',
         )
 
     def get_total(self, obj):
@@ -153,3 +154,21 @@ class CompetitionSerializer(serializers.ModelSerializer):
 
     def get_selected_tickets(self, obj):
         return obj.get_selected_tickets
+
+
+class HowToPlaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HowToPLay
+        fields = '__all__'
+
+
+class HowItWorksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HowItWorks
+        fields = '__all__'
+
+
+class LiveDrawSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = LiveDraw
+        fields = ('url')

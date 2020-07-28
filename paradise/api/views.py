@@ -16,7 +16,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from paradise.models import *
 from .serializers import(
     CouponSerializer, EcardSerializer, ProductSerializer, OrderItemSerializer, OrderSerializer,
-    ShippingAddressSerializer, Competition_GroupSerializer, PrizeSerializer, CompetitionSerializer
+    ShippingAddressSerializer, Competition_GroupSerializer, PrizeSerializer, CompetitionSerializer,
+    HowItWorksSerializer, HowToPlaySerializer, LiveDrawSerializers
 )
 
 
@@ -108,7 +109,7 @@ class FeaturedCompetitionListView(ListAPIView):
 
     def get_queryset(self):
         qs = Competition.objects.filter(isActive=True)
-        featured_qs = qs.filter(isFeatured=True)
+        featured_qs = qs.filter(isFeatured=True)[:5]
         return featured_qs
 
 
@@ -169,3 +170,22 @@ class RemoveCompetitionFromCartView(APIView):
             return Response({'message': 'No active ticket!'}, status=HTTP_400_BAD_REQUEST)
 
 
+class HowItWorksListView(ListAPIView):
+    serializer_class = HowItWorksSerializer
+
+    def get_queryset(self):
+        return HowItWorks.objects.all()[:3]
+
+
+class HowToPlayListView(ListAPIView):
+    serializer_class = HowToPlaySerializer
+
+    def get_queryset(self):
+        return HowToPLay.objects.all()[:3]
+
+
+class LiveDrawsView(RetrieveAPIView):
+    serializer_class = LiveDrawSerializers
+
+    def get_queryset(self):
+        return LiveDraw.objects.all().first()

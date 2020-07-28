@@ -1,24 +1,5 @@
 from django.urls import path
-from paradise.api.views import (
-    ProductDetailView,
-    ProductListView,
-    OrderItemDeleteView,
-    Competition_GroupView,
-    OrderDetailView,
-    EcardListView,
-    CompetitionListView,
-    CountryListView,
-    Competition_GroupDetailView,
-    ShippingAddressCreateView,
-    ShippingAddressDeleteView,
-    ShippingAddressListView,
-    ShippingAddressUpdateView,
-    CouponCreateView,
-    CompetitionDetailView,
-    FeaturedCompetitionListView,
-    AddCompetitionToCartView,
-    RemoveCompetitionFromCartView
-)
+from paradise.api.views import *
 urlpatterns = [
     path('order_summary/', OrderDetailView.as_view(), name='order-summary'),
     path('addresses/', ShippingAddressListView.as_view(), name='address-list'),
@@ -43,5 +24,7 @@ urlpatterns = [
 
     path('remove-competition-from-cart/',
          RemoveCompetitionFromCartView.as_view(), name='remove-from-cart'),
-
+    path('how-it-works/', HowItWorksListView.as_view(), name='how-it-works'),
+    path('how-to-play/', HowToPlayListView.as_view(), name='how-to-play'),
+    path('live-draw/', LiveDrawsView.as_view(), name='live-draw')
 ]

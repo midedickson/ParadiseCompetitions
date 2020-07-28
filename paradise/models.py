@@ -234,3 +234,16 @@ class Winner(models.Model):
 class HowToPLay(models.Model):
     header = models.CharField(max_length=100)
     body = models.TextField(max_length=1000)
+
+
+class HowItWorks(models.Model):
+    header = models.CharField(max_length=100)
+    body = models.TextField(max_length=1000)
+
+
+class LiveDraw(models.Model):
+    url = models.CharField(max_length=1000)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_created']
