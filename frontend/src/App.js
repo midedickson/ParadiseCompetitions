@@ -9,6 +9,8 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import CompetitionsDetails from './components/CompetitonDetails';
+import PrivateRoute from './components/PrivateRoute';
+import Cart from './pages/Cart';
 
 
 function App () {
@@ -22,6 +24,7 @@ function App () {
           <Route exact path="/register" component={Signup} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/competitions/:id" component={CompetitionsDetails} />
+          <PrivateRoute exact path="/cart" component={Cart} />
         </Switch>
       </Layout>
     </>

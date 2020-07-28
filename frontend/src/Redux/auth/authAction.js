@@ -23,7 +23,6 @@ export const authClear = () => {
 }
 
 export const authError = (error) => {
-  console.log(error)
   return {
     type: AUTH_ERROR,
     payload: error

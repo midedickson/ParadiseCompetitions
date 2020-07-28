@@ -3,6 +3,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Image from "../assets/imgs/bottle.jpg";
 import { connect } from 'react-redux'
 import { getFeatured } from '../Redux/competitions/competitionAction'
+import { Link } from 'react-router-dom';
 
 
 const image = [ Image, Image, Image, Image ]
@@ -29,8 +30,11 @@ const LandCarousel = ({ featured, getFeatured }) => {
               alt="First slide"
             />
             <Carousel.Caption>
-              <h3>{val.title}</h3>
-              <p>{val.description}</p>
+              <Link
+                to={`/competitions/${val.id}`}>
+                  <h3>{val.title}</h3>
+                  <p>{val.description}</p>
+              </Link>
             </Carousel.Caption>
           </Carousel.Item>
 

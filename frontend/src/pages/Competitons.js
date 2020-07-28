@@ -29,9 +29,9 @@ const Competitions = ({ competitions, getCompetitions }) => {
                 <Card.Img variant="top" src={val.associated_product.image} height="100" width="180" />
                 <Card.Body>
                   <Card.Title>{val.title}</Card.Title>
-                  <Card.Text>
-                    {val.price}
-                  </Card.Text>
+                    <Card.Text>
+                      {val.price}
+                    </Card.Text>
                 </Card.Body>
               </Card>
             </Link>

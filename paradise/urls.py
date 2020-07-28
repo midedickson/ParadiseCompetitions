@@ -17,9 +17,7 @@ from paradise.api.views import (
     CompetitionDetailView,
     FeaturedCompetitionListView,
     AddCompetitionToCartView,
-    RemoveCompetitionFromCartView,
-    SelectedTickets
-
+    RemoveCompetitionFromCartView
 )
 urlpatterns = [
     path('order_summary/', OrderDetailView.as_view(), name='order-summary'),
@@ -45,6 +43,5 @@ urlpatterns = [
 
     path('remove-competition-from-cart/',
          RemoveCompetitionFromCartView.as_view(), name='remove-from-cart'),
-    path('selected_tickets/', SelectedTickets.as_view(), name='selected_tickets')
 
 ]

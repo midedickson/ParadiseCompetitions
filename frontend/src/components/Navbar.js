@@ -1,10 +1,11 @@
 import React from "react";
 import Navbar from 'react-bootstrap/Navbar'
+import { connect } from 'react-redux'
 import Nav from "react-bootstrap/Nav"
 import Container from 'react-bootstrap/Container'
 import logo from "../assets/imgs/palmtree.png"
 
-const Navigation = () => {
+const Navigation = ({cartLength}) => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="black" variant="black">
       <Container>
@@ -26,8 +27,19 @@ const Navigation = () => {
             <Nav.Link href="/how-to-play">How To Play</Nav.Link>
             <Nav.Link href="/live-Draw">Live Draw</Nav.Link>
             <Nav.Link href="/podium">Podium</Nav.Link>
-            <Nav.Link href="/login">Client Login</Nav.Link>
-            <Nav.Link href="/register">Register</Nav.Link>
+            {
+              localStorage.getItem('auth-token') ? (
+                <>
+                  <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                  <Nav.Link href="/cart">Cart <b>{cartLength}</b> </Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link href="/login">Client Login</Nav.Link>
+                  <Nav.Link href="/register">Register</Nav.Link>
+                </>
+              )
+            }
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -36,4 +48,10 @@ const Navigation = () => {
   )
 }
 
-export default Navigation;
+const mapStateToProps = (state) => {
+  return {
+    cartLength: state.cart.cart_items.length
+  }
+}
+
+export default connect(mapStateToProps)(Navigation);

@@ -1,6 +1,5 @@
-import axios from 'axios';
+import axios from './axios';
 
-const baseurl = 'http://paradisebackend.herokuapp.com/'
 
 const handleResponse = (res) => {
   return res.data
@@ -20,7 +19,7 @@ const config = {
 
 export const login = ({ username, password }) => {
   return axios.post(
-    baseurl + 'accounts/api/auth/login', {
+    'accounts/api/auth/login', {
     username,
     password
   }, config
@@ -37,7 +36,7 @@ export const register = ({
   password
 }) => {
   return axios.post(
-    baseurl + 'accounts/api/auth/register', {
+    'accounts/api/auth/register', {
     first_name,
     last_name,
     username,
@@ -51,10 +50,10 @@ export const register = ({
 
 export const logout = (token) => {
   return axios.post(
-    baseurl + 'accounts/api/auth/logout', null, {
+    'accounts/api/auth/logout', null, {
     headers: {
       'content-type': 'application/json',
-      'Authorization': token
+      'Authorization': `Token ${token}`,
     }
   })
     .then(handleResponse)

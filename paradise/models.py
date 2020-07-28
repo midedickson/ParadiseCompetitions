@@ -150,12 +150,23 @@ class Competition(models.Model):
         associated_product = random.choice(ecards)
         return associated_product
 
+    @property
+    def get_selected_tickets(self):
+        tickets_selected = []
+        competition = Competition.objects.get(id=self.id)
+        order_item_qs = OrderItem.objects.filter(competition=competition)
+        for item in order_item_qs:
+            ticket = item.selected_ticket
+            tickets_selected.append(ticket)
+        return tickets_selected
+
 
 class Order(models.Model):
     customer = models.ForeignKey(
         User, on_delete=models.CASCADE)
     date_ordered = models.DateTimeField(auto_now_add=True)
-    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+    coupon = models.ForeignKey(
+        Coupon, on_delete=models.SET_NULL, null=True, blank=True)
     complete = models.BooleanField(default=False)
 
     @property

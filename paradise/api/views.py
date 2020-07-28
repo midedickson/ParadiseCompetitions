@@ -169,16 +169,3 @@ class RemoveCompetitionFromCartView(APIView):
             return Response({'message': 'No active ticket!'}, status=HTTP_400_BAD_REQUEST)
 
 
-class SelectedTickets(APIView):
-    def get(self, request, *args, **kwargs):
-        competition_id = request.data.get('competition_id', None)
-        tickets_selected = []
-        if competition_id is not None:
-            competition = Competition.objects.get(id=competition_id)
-            order_item_qs = OrderItem.objects.filter(competition=competition)
-            for item in order_item_qs:
-                ticket = item.selected_ticket
-                tickets_selected.append(ticket)
-            return Response({"tickets_selected": tickets_selected})
-        else:
-            return Response({"message": "No Competition with this id"})

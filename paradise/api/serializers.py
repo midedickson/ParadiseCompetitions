@@ -127,6 +127,7 @@ class CompetitionSerializer(serializers.ModelSerializer):
     ticket_letter_start = serializers.SerializerMethodField()
     ticket_letter_end = serializers.SerializerMethodField()
     tickets_per_letter = serializers.SerializerMethodField()
+    selected_tickets = serializers.SerializerMethodField()
 
     class Meta:
         model = Competition
@@ -149,3 +150,6 @@ class CompetitionSerializer(serializers.ModelSerializer):
 
     def get_tickets_per_letter(self, obj):
         return obj.get_tickets_per_letter_display()
+
+    def get_selected_tickets(self, obj):
+        return obj.get_selected_tickets
