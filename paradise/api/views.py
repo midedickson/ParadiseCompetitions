@@ -184,7 +184,7 @@ class HowToPlayListView(ListAPIView):
         return HowToPLay.objects.all()[:3]
 
 
-class LiveDrawsView(RetrieveAPIView):
+class LiveDrawsView(ListAPIView):
     serializer_class = LiveDrawSerializers
 
     def get_queryset(self):
