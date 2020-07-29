@@ -242,6 +242,7 @@ class HowItWorks(models.Model):
 
 
 class LiveDraw(models.Model):
+    appID = models.CharField(max_length=100)
     url = models.CharField(max_length=1000)
     date_created = models.DateTimeField(auto_now_add=True)
 

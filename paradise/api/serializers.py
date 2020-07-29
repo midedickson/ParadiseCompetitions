@@ -171,4 +171,4 @@ class HowItWorksSerializer(serializers.ModelSerializer):
 class LiveDrawSerializers(serializers.ModelSerializer):
     class Meta:
         model = LiveDraw
-        fields = ('url')
+        fields = ('appID', 'url', )
