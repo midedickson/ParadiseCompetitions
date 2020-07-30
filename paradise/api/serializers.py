@@ -108,10 +108,7 @@ class Competition_GroupSerializer(serializers.ModelSerializer):
 class PrizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Prize
-        fields = (
-            'title',
-            'image',
-        )
+        fields = '__all__'
 
 
 class EcardSerializer(serializers.ModelSerializer):

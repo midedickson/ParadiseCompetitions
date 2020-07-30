@@ -41,9 +41,24 @@ class Product(models.Model):
             return self.price
 
 
+MEDIA_TYPE = (
+    ('video', 'VIDEO'),
+    ('image', 'PICTURE')
+)
+
+
 class Prize(models.Model):
     title = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='prizes/', null=True, blank=True)
+    media_1_type = models.CharField(max_length=5)
+    media_1 = models.FileField(upload_to='prizes/', null=True, blank=True)
+    media_2_type = models.CharField(max_length=5)
+    media_2 = models.FileField(upload_to='prizes/', null=True, blank=True)
+    media_3_type = models.CharField(max_length=5)
+    media_3 = models.FileField(upload_to='prizes/', null=True, blank=True)
+    media_4_type = models.CharField(max_length=5)
+    media_4 = models.FileField(upload_to='prizes/', null=True, blank=True)
+    media_5_type = models.CharField(max_length=5)
+    media_5 = models.FileField(upload_to='prizes/', null=True, blank=True)
 
     def __str__(self):
         return self.title
