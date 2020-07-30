@@ -1,10 +1,22 @@
 from rest_framework import serializers
 from paradise.models import *
+from django.contrib.auth.models import User
 
 
 class StringSerializer(serializers.StringRelatedField):
     def to_internal_value(self, value):
         return value
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+        )
 
 
 class CouponSerializer(serializers.ModelSerializer):
@@ -169,3 +181,18 @@ class LiveDrawSerializers(serializers.ModelSerializer):
     class Meta:
         model = LiveDraw
         fields = ('appID', 'url', )
+
+
+class WinnerSerializer(serializers.ModelSerializer):
+    customer = serializers.SerializerMethodField()
+    competition = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Winner
+        fields = '__all__'
+
+    def get_customer(self, obj):
+        return UserSerializer(obj.customer, many=False).data
+
+    def get_cometition(self, obj):
+        return CompetitionSerializer(obj.competition, many=False).data

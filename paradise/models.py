@@ -244,16 +244,29 @@ class Winner(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     winning_ticket = models.CharField(max_length=4)
+    live_draw_url = models.CharField(max_length=1000)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'Winner of {}'.format(self.competition)
 
 
 class HowToPLay(models.Model):
     header = models.CharField(max_length=100)
     body = models.TextField(max_length=1000)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_created']
 
 
 class HowItWorks(models.Model):
     header = models.CharField(max_length=100)
     body = models.TextField(max_length=1000)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_created']
 
 
 class LiveDraw(models.Model):

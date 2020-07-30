@@ -14,11 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from paradise.models import *
-from .serializers import(
-    CouponSerializer, EcardSerializer, ProductSerializer, OrderItemSerializer, OrderSerializer,
-    ShippingAddressSerializer, Competition_GroupSerializer, PrizeSerializer, CompetitionSerializer,
-    HowItWorksSerializer, HowToPlaySerializer, LiveDrawSerializers
-)
+from .serializers import *
 
 
 class ProductListView(ListAPIView):
@@ -189,3 +185,8 @@ class LiveDrawsView(RetrieveAPIView):
 
     def get_object(self):
         return LiveDraw.objects.all().first()
+
+
+class WinnersView(ListAPIView):
+    serializer_class = WinnerSerializer
+    queryset = Winner.objects.all()[:5]

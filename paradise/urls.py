@@ -26,5 +26,6 @@ urlpatterns = [
          RemoveCompetitionFromCartView.as_view(), name='remove-from-cart'),
     path('how-it-works/', HowItWorksListView.as_view(), name='how-it-works'),
     path('how-to-play/', HowToPlayListView.as_view(), name='how-to-play'),
-    path('live-draw/', LiveDrawsView.as_view(), name='live-draw')
+    path('live-draw/', LiveDrawsView.as_view(), name='live-draw'),
+    path('winners/', WinnersView.as_view(), name='winners')
 ]
