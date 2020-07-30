@@ -194,5 +194,5 @@ class WinnerSerializer(serializers.ModelSerializer):
     def get_customer(self, obj):
         return UserSerializer(obj.customer, many=False).data
 
-    def get_cometition(self, obj):
+    def get_competition(self, obj):
         return CompetitionSerializer(obj.competition, many=False).data
